@@ -1,4 +1,0 @@
-select * from dossier where rtx='%rtx%'
-
-Expression regulier
-^RTX \d+\/\d+$
