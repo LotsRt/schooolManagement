@@ -1,0 +1,9 @@
+style_commune
+style_district
+style_fn_fianara
+style_fokontany
+style_partielle
+style_region
+style_reperage_prealable
+style_reperage_second
+style_titre_fianara

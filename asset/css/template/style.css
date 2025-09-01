@@ -1,0 +1,89 @@
+body {
+  overflow-x: hidden;
+  background-color: #f8f9fa;
+}
+
+
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  background-color: #e9ecef;
+  transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+  width: 80px;
+}
+
+.sidebar .nav-link {
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  border-radius: 6px;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #ced4da;
+}
+
+.sidebar .nav-link i {
+  width: 20px;
+  text-align: center;
+}
+
+.content {
+  transition: margin-left 0.3s;
+  margin-left: 250px;
+}
+
+.content.collapsed {
+  margin-left: 80px;
+}
+
+.navbar {
+  transition: margin-left 0.3s;
+  z-index: 1;
+}
+
+.navbar.collapsed {
+  margin-left: 80px !important;
+}
+
+.navbar.expanded {
+  margin-left: 250px !important;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.app-footer {
+  background-color: #f1f3f5;
+  color: #6c757d;
+  font-size: 14px;
+  border-top: 1px solid #dee2e6;
+  padding: 15px 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  text-align: center;
+}
+ /* Effet quand la souris passe sur un item */
+  .dropdown-item:hover {
+    background-color: #0d6efd; /* bleu Bootstrap */
+    color: white;
+  }
+
+  .nav-link:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+  }
