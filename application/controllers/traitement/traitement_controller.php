@@ -168,7 +168,7 @@ class traitement_controller extends My_controller
 
     // public function eleve_detail()
 // {
-//     $this->load->helper('security');
+//    $th is->load->helper('security');
 
     //     $id = $this->input->get('id');
 //     $token = $this->input->get('token');
