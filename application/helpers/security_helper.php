@@ -1,6 +1,5 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 if (!function_exists('generate_token')) {
     function generate_token($id) {
         $secret = "SchoolManager@2025"; // mets une clé longue et secrète
