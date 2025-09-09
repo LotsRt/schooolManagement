@@ -80,7 +80,7 @@
                     <div class="form-group row mt-2">
                         <label class="col-sm-4">Prénom</label>
                         <div class="col-sm-8">
-                            <input type="text" name="Prénom" id="Prénom" class="form-control" required>
+                            <input type="text" name="Prenom" id="Prénom" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-group row mt-2">
@@ -155,6 +155,7 @@
         <button type="button" class="btn btn-primary " id="open" data-bs-toggle="modal"
             data-bs-target="#modal_ajout">Ajout_note</button>
              <button type="button" class="btn btn-primary" id="openmodal" onclick="openAddModal()">Ajout_eleve</button>
+              <button type="button" class="btn btn-primary" id="test" onclick="affiche_getapi()">Test</button>
     </div>
     <div class="d-flex justify-content-end">
         
@@ -193,3 +194,4 @@
 <script src="<?= base_url('asset/allScript/template/jquery-3.4.1.min.js'); ?>"></script>
 <script src="<?= base_url('asset/allScript/traitement/sweetalert.js') ?>"></script>
 <script src="<?= base_url('asset/allScript/traitement/ajout_eleve.js'); ?>"></script>
+<script src="<?= base_url('asset/allScript/testapi.js'); ?>"></script>

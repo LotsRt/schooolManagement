@@ -136,6 +136,7 @@
             data-bs-target="#modal_ajoutMat">Ajout Matiere</button>
             <button type="button" class="btn btn-primary " id="open" data-bs-toggle="modal"
             data-bs-target="#modal_ajoutMatFi">Ajout Matiere par filière</button>
+            <button type="button" class="btn btn-primary " id="open" onclick="test()">test</button>
     </div>
     <div class="card-body table_custom_1" style="margin:0;padding:0;">
         <table class="table table-striped table-bordered text-center align-middle">
@@ -171,3 +172,4 @@
 <script src="<?= base_url('asset/allScript/template/jquery-3.4.1.min.js'); ?>"></script>
 <script src="<?= base_url('asset/allScript/traitement/sweetalert.js') ?>"></script>
 <script src="<?= base_url('asset/allScript/traitement/ajout_matFilier.js'); ?>"></script>
+<script src="<?= base_url('asset/allScript/apitest.js'); ?>"></script>

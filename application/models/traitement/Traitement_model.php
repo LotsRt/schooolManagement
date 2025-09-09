@@ -11,9 +11,9 @@ class Traitement_model extends CI_Model
     }
     // -------------------------------------------------------------------//
     // fonction d ajout
-    public function ajout_eleve($data)
+    public function ajout_eleve($dataEleve)
     {
-        $query1 = $this->db->insert('eleve', $data);
+        $query1 = $this->db->insert('eleve', $dataEleve);
         // $query2 = $this->db->insert('inscription', $data1);
         // return $query1 && $query2;
         return $query1;
@@ -54,11 +54,11 @@ class Traitement_model extends CI_Model
     }
 
     // -------------------------------------------------------------------//
-    public function eleve_modif($data)
+    public function eleve_modif($dataEleve)
     {
-        $this->db->where('id_eleve', $data['id_eleve']);
-        unset($data['id_eleve']);
-        return $this->db->update('eleve', $data);
+        $this->db->where('id_eleve', $dataEleve['id_eleve']);
+        unset($dataEleve['id_eleve']);
+        return $this->db->update('eleve', $dataEleve);
     }
 
     // -------------------------------------------------------------------//
@@ -108,6 +108,12 @@ class Traitement_model extends CI_Model
         $this->db->where('id_inscription', $id);
         $query = $this->db->get();
         return $query->row_array();
+    }
+
+
+    public function recupere(){
+        $query=$this->db->get('eleve');
+        return $query->result_array();
     }
 }
 // CREER UN FONCTION DANS LA BASE OU IL CALCULE AUTOMATIQUEMENT LES DONNE ENTRER

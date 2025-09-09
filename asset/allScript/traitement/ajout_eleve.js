@@ -6,49 +6,37 @@ $('#form_calque').on('submit', function (x) {
 });
 
 function ajout_eleve() {
-    const id_eleve = $('#id_eleve').val();
-    const Matricule = $('#Matricule').val();
-    const Nom = $('#Nom').val();
-    const Prénom = $('#Prénom').val();
-    const Age = $('#Age').val();
-    const Sexe = $('#Sexe').val();
-    const naissance = $('#naissance').val();
-    const père = $('#père').val();
-    const mère = $('#mère').val();
-    const adresse = $('#Adresse').val();
-    const classe = $('#classe').val();
-    // const date_inscription = $('#date_inscription').val();
-    // const anne = $('#anne').val();
-
+       let id_eleve=$('#id_eleve').val();
+    const data = {
+        Matricule: $('#Matricule').val(),
+        Nom: $('#Nom').val(),
+        Prénom: $('#Prénom').val(),
+        Age: $('#Age').val(),
+        Sexe: $('#Sexe').val(),
+        naissance: $('#naissance').val(),
+        père: $('#père').val(),
+        mère: $('#mère').val(),
+        adresse: $('#adresse').val(),
+        classe: $('#classe').val(),
+        // anne:anne,
+        // date_inscription:date_inscription
+    }
 
     let Swal;
-
     let url = "";
+    let type="POST";
     if (id_eleve === "") {
-        url = base_url + "Ajout";
+        url = base_url + "api/v1/eleves";
     }
     else {
-        url = base_url + "upgrader_eleve";
+        url = base_url + "api/v1/eleves/" + id_eleve;
+        type="PUT";
     }
     $.ajax({
         url: url,
-        type: 'POST',
-        data: {
-            id_eleve: id_eleve,
-            Matricule: Matricule,
-            Nom: Nom,
-            Prénom: Prénom,
-            Age: Age,
-            Sexe: Sexe,
-            naissance: naissance,
-            père: père,
-            mère: mère,
-            adresse: adresse,
-            classe: classe,
-            // anne:anne,
-            // date_inscription:date_inscription
-
-        },
+        type:type,
+        contentType: 'application/json',
+        data: JSON.stringify(data),
         dataType: "json",
         success: function (reponse) {
             if (reponse.status === "success") {
@@ -70,7 +58,6 @@ function ajout_eleve() {
             $('#modal_test').modal('hide');
         }
     });
-
 }
 
 // -----------------------------------------------------------------------------------
@@ -92,9 +79,9 @@ function affiche_table(data) {
     body_table_content.html('');
     if (data.length >= 1) {
         data.forEach(row => {
-            let button=''
-            if(role=='admin' || role=='superadmin'){
-                button=`<td class="text-center" colspan="2">
+            let button = ''
+            if (role == 'admin' || role == 'superadmin') {
+                button = `<td class="text-center" colspan="2">
                         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#modal_test"
                             onclick="recuperId(${row['id_eleve']})">
@@ -150,7 +137,7 @@ function recuperId(id) {
                     $('#mère').val(data.mere);
                     $('#Adresse').val(data.adresse);
                     $('#classe').val(data.code_filier);
-                    $('#Sexe,#Age,#Adresse,#naissance,#recrutement,#grade,#père,#mère').prop('disabled', true);
+                    $('#Matricule,#Age,#Adresse,#naissance,#recrutement,#grade').prop('disabled', true);
                     $('#modal_test').modal('show');
                 } else {
                     alert("Aucune donnée trouvée.");

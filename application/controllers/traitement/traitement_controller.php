@@ -32,64 +32,120 @@ class traitement_controller extends My_controller
         $this->load->view('template/footer');
     }
 
-    // -------------------------------------------------------------------//
-    // fonction d ajout eleve
-    public function ajout_eleve()
-    {
-        $Matricule = $this->input->post('Matricule');
-        $Nom = $this->input->post('Nom');
-        $Prénom = $this->input->post('Prénom');
-        $Age = $this->input->post('Age');
-        $Sexe = $this->input->post('Sexe');
-        $naissance = $this->input->post('naissance');
-        $père = $this->input->post('père');
-        $mère = $this->input->post('mère');
-        $adresse = $this->input->post('adresse');
-        $classe = $this->input->post('classe');
-        $date_inscription = $this->input->post('date_inscription');
-        $anne = $this->input->post('anne');
+    //utilisation de api dans traitement
+    public function ajout_eleve(){
+        $data=json_decode($this->input->raw_input_stream,true);
 
-        if (empty($Matricule) || !is_numeric($Matricule)) {
+        if (empty($data['Matricule']) || !is_numeric($data['Matricule'])) {
             echo json_encode([
                 'status' => 'error',
                 'message' => 'Matricule invalide ou vide'
             ]);
             return;
         }
-        $data = [
-            'matricule' => $Matricule,
-            'nom' => $Nom,
-            'prenom' => $Prénom,
-            'age' => $Age,
-            'sexe' => $Sexe,
-            'date_naissance' => $naissance,
-            'pere' => $père,
-            'mere' => $mère,
-            'adresse' => $adresse,
-            'code_filier' => $classe
+        if(empty($data['Nom'])||empty($data['Prénom'])){
+            echo json_encode([
+                'status'=>'error',
+                'message'=>'Nom et prenom obligatoire'
+            ]);
+            return;
+        }
+
+         $dataEleve = [
+            'matricule' => $data['Matricule'],
+            'nom' => $data['Nom'],
+            'prenom' => $data['Prénom']??'',
+            'age' => $data['Age']?? null,
+            'sexe' =>$data['Sexe']?? '',
+            'date_naissance' => $data['naissance']?? null,
+            'pere' => $data['père']?? '',
+            'mere' => $data['mère']?? '',
+            'adresse' =>$data['adresse']?? '',
+            'code_filier' => $data['classe']?? '1'
         ];
 
-        $check = $this->Traitement_model->check_base($Matricule);
+        $check = $this->Traitement_model->check_base($data['Matricule']);
         if (!empty($check)) {
             echo json_encode([
                 'status' => 'error',
                 'message' => (" Etudiant déjà inscrit ")
             ]);
-        } else {
-            $add = $this->Traitement_model->ajout_eleve($data);
+            return;
+        } 
+
+            $add = $this->Traitement_model->ajout_eleve($dataEleve);
             if ($add) {
                 echo json_encode([
                     'status' => 'success',
-                    'message' => (" $Matricule  $Nom  $Prénom ajouté(e) avec succues ")
-                ]);
+                    'message' => ("ajouté(e) avec succues "),
+                    'data'=>$dataEleve
+                ],JSON_UNESCAPED_UNICODE);
             } else {
                 echo json_encode([
                     'status' => 'error',
                     'message' => ('erreur lors de l insertion')
                 ]);
             }
-        }
     }
+    // -------------------------------------------------------------------//
+
+    // fonction d ajout eleve
+    // public function ajout_eleve()
+    // {
+    //     $Matricule = $this->input->post('Matricule');
+    //     $Nom = $this->input->post('Nom');
+    //     $Prénom = $this->input->post('Prénom');
+    //     $Age = $this->input->post('Age');
+    //     $Sexe = $this->input->post('Sexe');
+    //     $naissance = $this->input->post('naissance');
+    //     $père = $this->input->post('père');
+    //     $mère = $this->input->post('mère');
+    //     $adresse = $this->input->post('adresse');
+    //     $classe = $this->input->post('classe');
+    //     $date_inscription = $this->input->post('date_inscription');
+    //     $anne = $this->input->post('anne');
+
+    //     if (empty($Matricule) || !is_numeric($Matricule)) {
+    //         echo json_encode([
+    //             'status' => 'error',
+    //             'message' => 'Matricule invalide ou vide'
+    //         ]);
+    //         return;
+    //     }
+    //     $data = [
+    //         'matricule' => $Matricule,
+    //         'nom' => $Nom,
+    //         'prenom' => $Prénom,
+    //         'age' => $Age,
+    //         'sexe' => $Sexe,
+    //         'date_naissance' => $naissance,
+    //         'pere' => $père,
+    //         'mere' => $mère,
+    //         'adresse' => $adresse,
+    //         'code_filier' => $classe
+    //     ];
+
+    //     $check = $this->Traitement_model->check_base($Matricule);
+    //     if (!empty($check)) {
+    //         echo json_encode([
+    //             'status' => 'error',
+    //             'message' => (" Etudiant déjà inscrit ")
+    //         ]);
+    //     } else {
+    //         $add = $this->Traitement_model->ajout_eleve($data);
+    //         if ($add) {
+    //             echo json_encode([
+    //                 'status' => 'success',
+    //                 'message' => (" $Matricule  $Nom  $Prénom ajouté(e) avec succues ")
+    //             ]);
+    //         } else {
+    //             echo json_encode([
+    //                 'status' => 'error',
+    //                 'message' => ('erreur lors de l insertion')
+    //             ]);
+    //         }
+    //     }
+    // }
 
     // -------------------------------------------------------------------//
     // fonction de recuperation d eleve avec nom de filiere
@@ -113,41 +169,31 @@ class traitement_controller extends My_controller
 
 
     // -------------------------------------------------------------------//
-    public function update_eleve()
+    public function update_eleve($id)
     {
-        $id_eleve = $this->input->post('id_eleve');
-        $Matricule = $this->input->post('Matricule');
-        $Nom = $this->input->post('Nom');
-        $Prénom = $this->input->post('Prénom');
-        $Age = $this->input->post('Age');
-        $Sexe = $this->input->post('Sexe');
-        $naissance = $this->input->post('naissance');
-        $père = $this->input->post('père');
-        $mère = $this->input->post('mère');
-        $adresse = $this->input->post('adresse');
-        $classe = $this->input->post('classe');
+        $data=json_decode($this->input->raw_input_stream,true);
 
-        $data = [
-            'matricule' => $Matricule,
-            'nom' => $Nom,
-            'prenom' => $Prénom,
-            'age' => $Age,
-            'sexe' => $Sexe,
-            'date_naissance' => $naissance,
-            'pere' => $père,
-            'mere' => $mère,
-            'adresse' => $adresse,
-            'code_filier' => $classe
+        $dataEleve = [
+            'nom' => $data['Nom'],
+            'prenom' => $data['Prénom']??'',
+            'age' => $data['Age']?? null,
+            'sexe' =>$data['Sexe']?? '',
+            'date_naissance' => $data['naissance']?? null,
+            'pere' => $data['père']?? '',
+            'mere' => $data['mère']?? '',
+            'adresse' =>$data['adresse']?? '',
+            'code_filier' => $data['classe']?? '1'
         ];
-        $data['id_eleve'] = $id_eleve;
-        $donne_modif = $this->Traitement_model->eleve_modif($data);
+        
+        $dataEleve['id_eleve'] = $id;
+        $donne_modif = $this->Traitement_model->eleve_modif($dataEleve);
         if ($donne_modif) {
             echo json_encode(
                 [
                     'status' => 'success',
-                    'message' => (" $Matricule  $Nom  $Prénom  modifié(e) avec succues ")
-                ]
-            );
+                    'message' => ("modifié(e) avec succues "),
+                    'data'=>['matricule'=>$data['Matricule'],'nom'=>$data['Nom'],'prenom'=>$data['Prénom']]
+                ],JSON_UNESCAPED_UNICODE);
         } else {
             echo json_encode([
                 'status' => 'error',
@@ -335,5 +381,21 @@ class traitement_controller extends My_controller
         echo json_encode($data);
     }
 
+
+    
+    public function getApi_eleve()
+    {
+        $eleve = $this->Traitement_model->recupere();
+        if ($eleve) {
+            echo json_encode([
+                'status' => 'success',
+                'data' => $eleve
+            ], JSON_UNESCAPED_UNICODE);
+        }else{
+            echo json_encode([
+                'status'=>'error'
+            ]);
+        }
+    }
 }
 //test

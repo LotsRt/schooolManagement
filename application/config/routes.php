@@ -64,12 +64,15 @@ $route['test'] = 'Authentification/authentification/test';
 $route['Login'] = 'Authentification/controlle/affiche_login';
 //-route_eleve
 $route['Eleve'] = 'traitement/traitement_controller/view_ajout_eleve';
-
-$route['Ajout'] = 'traitement/traitement_controller/ajout_eleve';
+$route['api/v1/eleves']['GET']='traitement/traitement_controller/getApi_eleve';//api qui recupere les eleve
+//route api version
+$route['api/v1/eleves']['POST'] = 'traitement/traitement_controller/ajout_eleve';
+// $route['Ajout'] = 'traitement/traitement_controller/ajout_eleve'; 09 09 25
 $route['Accueil'] = 'welcome/index';
 $route['get_eleve_matiere'] = 'traitement/traitement_controller/get_eleve';
 $route['recupere_avecID_eleve'] = 'traitement/traitement_controller/getById_eleve';
-$route['upgrader_eleve'] = 'traitement/traitement_controller/update_eleve';
+// $route['upgrader_eleve'] = 'traitement/traitement_controller/update_eleve';09 09 25
+$route['api/v1/eleves/(:num)']['PUT'] = 'traitement/traitement_controller/update_eleve/$1';
 
 //pour cacher le id
 $route['DetailE/(:num)'] = 'traitement/traitement_controller/rediriger_detail_eleve/$1';
