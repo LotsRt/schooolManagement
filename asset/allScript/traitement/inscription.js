@@ -3,7 +3,7 @@ let Swal;
 let url = "";
 $('#form_inscription').on('submit',function(x){
     x.preventDefault();
-    inscription();
+    inscription();00
 });
 
 function inscription(){

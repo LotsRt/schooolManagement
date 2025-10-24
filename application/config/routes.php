@@ -124,4 +124,6 @@ $route['add_inscription'] = 'traitement/traitement_controller/inscription_eleve'
 $route['get_inscription'] = 'traitement/traitement_controller/get_inscription';
 $route['recupere_avecID_inscription'] = 'traitement/traitement_controller/getById_inscription';
 $route['modification_inscription'] = 'traitement/traitement_controller/modif_inscription';
-
+//route pour la recherche
+$route['api/v1/find']['POST'] = 'traitement/Enseignant_controller/chercher';
+$route['api/v1/findEleve']['POST'] = 'traitement/traitement_controller/getEleve';

@@ -118,12 +118,12 @@
 <!-- Fin Modal -->
 
 
-
-
 <div class="content p-4" id="main-content">
     <div>
         <button type="button" class="btn btn-primary " id="open modal" onclick="openAddModal()">Enseignant</button>
     </div>
+    <input type="text" id="recherche" class="form-control" placeholder="Rechercher un enseignant...">
+<div id="suggestions" class="list-group position-absolute w-100"></div>
     <div class="card-body table_custom_1" style="margin:0;padding:0;">
         <table class="table table-striped table-bordered text-center align-middle">
             <thead class="table_head">

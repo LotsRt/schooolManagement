@@ -73,4 +73,15 @@ class Enseignant_model extends CI_Model
         return $query->row_array();
     }
 
+
+
+    public function find($donne){
+        $this->db->like('CAST(matricule AS TEXT)', $donne, 'both', false);
+        $this->db->or_like('nom',$donne);
+        $this->db->or_like('prenom',$donne);
+        $this->db->or_like('email',$donne);
+        $query=$this->db->get('enseignant');
+        return $query->result_array();
+        
+    }
 }

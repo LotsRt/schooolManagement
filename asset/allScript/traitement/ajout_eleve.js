@@ -6,7 +6,7 @@ $('#form_calque').on('submit', function (x) {
 });
 
 function ajout_eleve() {
-       let id_eleve=$('#id_eleve').val();
+    let id_eleve = $('#id_eleve').val();
     const data = {
         Matricule: $('#Matricule').val(),
         Nom: $('#Nom').val(),
@@ -24,17 +24,17 @@ function ajout_eleve() {
 
     let Swal;
     let url = "";
-    let type="POST";
+    let type = "POST";
     if (id_eleve === "") {
         url = base_url + "api/v1/eleves";
     }
     else {
         url = base_url + "api/v1/eleves/" + id_eleve;
-        type="PUT";
+        type = "PUT";
     }
     $.ajax({
         url: url,
-        type:type,
+        type: type,
         contentType: 'application/json',
         data: JSON.stringify(data),
         dataType: "json",
@@ -62,7 +62,7 @@ function ajout_eleve() {
 
 // -----------------------------------------------------------------------------------
 
-function fetch() {
+function fetchData() {
     $.ajax({
         url: base_url + 'get_eleve_matiere',
         type: 'GET',
@@ -110,7 +110,7 @@ function affiche_table(data) {
 }
 
 $(document).ready(function () {
-    fetch();
+    fetchData();
 });
 
 
@@ -214,3 +214,76 @@ function ajout_note() {
 
 
 // -----------------------------------------------------------------------------
+document.addEventListener("DOMContentLoaded", function () {
+    const rechercheInput = document.getElementById("rechercheEleve");
+    const suggestionBox = document.getElementById("suggestionsEleve");
+    const tableBody = document.getElementById("body_table_content");
+
+    rechercheInput.addEventListener("keyup", function () {
+        const query = rechercheInput.value.trim();
+
+        if (query !== '') {
+            fetch('http://localhost/school_management/api/v1/findEleve', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query: query })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Afficher les suggestions
+                    suggestionBox.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            const a = document.createElement("a");
+                            a.href = "#";
+                            a.className = "list-group-item list-group-item-action suggestion";
+                            a.textContent = `${item.nom} ${item.prenom} ${item.matricule}`;
+
+                            a.addEventListener("click", function (e) {
+                                e.preventDefault();
+
+                                // Remplir le tableau avec l'élève sélectionné
+                                tableBody.innerHTML = '';
+                                const tr = document.createElement("tr");
+
+                                const tdMatricule = document.createElement("td");
+                                tdMatricule.textContent = item.matricule;
+
+                                const tdNom = document.createElement("td");
+                                tdNom.textContent = item.nom;
+
+                                const tdPrenom = document.createElement("td");
+                                tdPrenom.textContent = item.prenom;
+
+                                tr.appendChild(tdMatricule);
+                                tr.appendChild(tdNom);
+                                tr.appendChild(tdPrenom);
+                                tableBody.appendChild(tr);
+
+                                // Remettre le texte de l'input
+                                rechercheInput.value = `${item.nom} ${item.prenom} ${item.matricule}`;
+                                suggestionBox.innerHTML = ''; // vider les suggestions
+                            });
+
+                            suggestionBox.appendChild(a);
+                        });
+                    } else {
+                        const noResult = document.createElement("div");
+                        noResult.className = "list-group-item text-muted";
+                        noResult.textContent = "Aucun résultat trouvé";
+                        suggestionBox.appendChild(noResult);
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+        } else {
+            suggestionBox.innerHTML = '';
+            $(document).ready(function () {
+                fetchData();
+            });
+
+
+        }
+    });
+});

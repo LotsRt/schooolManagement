@@ -154,11 +154,12 @@
     <div>
         <button type="button" class="btn btn-primary " id="open" data-bs-toggle="modal"
             data-bs-target="#modal_ajout">Ajout_note</button>
-             <button type="button" class="btn btn-primary" id="openmodal" onclick="openAddModal()">Ajout_eleve</button>
-              <button type="button" class="btn btn-primary" id="test" onclick="affiche_getapi()">Test</button>
+        <button type="button" class="btn btn-primary" id="openmodal" onclick="openAddModal()">Ajout_eleve</button>
+        <input type="text" id="rechercheEleve" class="form-control" placeholder="Rechercher un eleve...">
+        <div id="suggestionsEleve" class="list-group position-absolute w-100"></div>
     </div>
     <div class="d-flex justify-content-end">
-        
+
     </div>
 
 
@@ -194,4 +195,4 @@
 <script src="<?= base_url('asset/allScript/template/jquery-3.4.1.min.js'); ?>"></script>
 <script src="<?= base_url('asset/allScript/traitement/sweetalert.js') ?>"></script>
 <script src="<?= base_url('asset/allScript/traitement/ajout_eleve.js'); ?>"></script>
-<script src="<?= base_url('asset/allScript/testapi.js'); ?>"></script>
+<script src="<?= base_url('asset/allScript/apitest.js'); ?>"></script>

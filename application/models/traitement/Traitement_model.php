@@ -111,8 +111,22 @@ class Traitement_model extends CI_Model
     }
 
 
-    public function recupere(){
-        $query=$this->db->get('eleve');
+    public function recupere()
+    {
+        $query = $this->db->get('eleve');
+        return $query->result_array();
+    }
+
+
+    public function rechercheEleve($result)
+    {
+        $this->db->group_start(); // ouvre un groupe pour OR combiné
+        $this->db->like('matricule::text', $result, 'after', false); // commence par le texte
+        $this->db->or_like('nom', $result, 'after');               // commence par le texte
+        $this->db->or_like('prenom', $result, 'after');            // commence par le texte
+        $this->db->group_end(); // ferme le groupe
+
+        $query = $this->db->get('eleve');
         return $query->result_array();
     }
 }

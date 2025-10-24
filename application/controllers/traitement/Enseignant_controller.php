@@ -14,7 +14,7 @@ class Enseignant_controller extends My_controller
     {
         $this->load->view('template/header');
         $this->load->view('template/sidebar');
-        $this->load->view('template/navbar');
+        $this->load->view('template/navbarEnseignant');
         $this->load->view('traitement/view_enseignant');
         $this->load->view('template/footer');
     }
@@ -180,5 +180,15 @@ class Enseignant_controller extends My_controller
         } else {
             show_404();
         }
+    }
+
+    
+    public function chercher(){
+        $donne=json_decode($this->input->raw_input_stream,true);
+        $result=$donne['query'];
+        $solution=$this->Enseignant_model->find($result);
+        echo json_encode($solution);
+
+
     }
 }

@@ -98,7 +98,7 @@ function affiche_enseignant(data) {
     body_table_content.html('');
     if (data.length >= 1) {
         data.forEach(row => {
-             let boutons = '';
+            let boutons = '';
             if (role === 'admin' || role === 'superadmin') {
                 boutons = `
                     <td class="text-center" colspan="2">
@@ -204,23 +204,110 @@ function openAddModal() {
     $('#modal_enseignant').modal('show');
 }
 
-// function detail(id) {
-//     $.ajax({
-//         url: base_url + 'detail_enseignant',
-//         type: 'POST',
-//         data: { id: id },
-//         dataType: 'json',
-//         success: function (reponse) {
-//             if (reponse.status === "success") {
-//                 swal.fire(
-//                     "Succès",
-//                     reponse.message,
-//                     "success");
-//             } else if (reponse.status === "error") {
-//                 swal.fire(
-//                     "Erreur",
-//                     reponse.message,
-//                     "error");
-//             }
-//         }
-//     });
+
+
+
+/*
+$(document).ready(function () {
+    $('#recherche').keyup(function () {
+        var query = $(this).val().trim();
+        if (query !== '') {
+            $.ajax({
+                url: base_url + "api/v1/find",
+                method: "POST",
+                data: { query: query },
+                dataType: "json",
+                success: function (data) {
+                    affiche_enseignant(data);
+                    let suggestionBox = $("#suggestions");
+                    suggestionBox.html('');
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            suggestionBox.append(`<a href="#" class="list-group-item list-group-item-action suggestion">${item.nom} ${item.prenom}</a>`);
+                        });
+
+                        // Si on clique sur une suggestion
+                        $(".suggestion").click(function (e) {
+                            e.preventDefault();
+                            $("#recherche").val($(this).text());
+                            suggestionBox.html('');
+                        });
+                    }
+                }
+            });
+        } else {
+            $("#suggestions").html('');
+        }
+    });
+});
+*/
+//methode fetch
+document.addEventListener("DOMContentLoaded", function () {
+    const rechercheInput = document.getElementById("recherche");
+    const suggestionBox = document.getElementById("suggestions");
+    let tableBody = document.getElementById('body_table_content');
+
+    rechercheInput.addEventListener("keyup", function () {
+        const query = rechercheInput.value.trim();
+
+        if (query !== '') {
+            fetch('http://localhost/school_management/api/v1/find', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ query: query })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Afficher les suggestions
+                    suggestionBox.innerHTML = '';
+                    if (data.length > 0) {
+                        data.forEach(item => {
+                            const a = document.createElement("a");
+                            a.href = "#";
+                            a.className = "list-group-item list-group-item-action suggestion";
+                            a.textContent = `${item.nom} ${item.prenom} ${item.email} ${item.matricule}`;
+
+                            a.addEventListener("click", function (e) {
+                                e.preventDefault();
+                                tableBody.innerHTML = '';
+                                const tr = document.createElement('tr');
+                                const tdMatricule = document.createElement('td');
+                                tdMatricule.textContent = item.matricule;
+
+                                const tdNom = document.createElement('td');
+                                tdNom.textContent = item.nom
+                                const tdPrenom = document.createElement('td');
+                                tdPrenom.textContent = item.prenom
+
+                                const tdEmail = document.createElement('td');
+                                tdEmail.textContent = item.email
+
+                                tr.appendChild(tdMatricule);
+                                tr.appendChild(tdNom);
+                                tr.appendChild(tdPrenom);
+                                tr.appendChild(tdEmail);
+                                tableBody.appendChild(tr);
+                                rechercheInput.value = `${item.nom} ${item.prenom} ${item.email} ${item.matricule}`;
+                                suggestionBox.innerHTML = ''; // vider les suggestions
+                            });
+                            suggestionBox.appendChild(a);
+                        });
+                    } else {
+                        const noResult = document.createElement("div");
+                        noResult.className = "list-group-item text-muted";
+                        noResult.textContent = "Aucun résultat trouvé";
+                        suggestionBox.appendChild(noResult);
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
+        } else {
+            suggestionBox.innerHTML = '';
+            $(document).ready(function () {
+                get_enseignant();
+            });
+
+        }
+    });
+});
